@@ -1,0 +1,5 @@
+*
+!flight_searcher
+!test
+!poetry.lock
+!pyproject.toml

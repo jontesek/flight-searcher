@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  app:
+    image: flight_searcher
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command:
+      - "uvicorn"
+      - "flight_searcher.api.app:app"
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8080"
+      # - "--reload"
+      # - "--reload-delay=0.5"
+      # - "--reload-dir=flight_searcher"
+      # - "--no-access-log"
+      - "--loop"
+      - "uvloop"
+    environment:
+      - ENVIRONMENT=local
+      - DEBUG=1
+      - REDIS_URL=redis://redis/0
+      - WEB_CONCURRENCY=5   # 2*CPU + 1
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
