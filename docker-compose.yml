@@ -26,9 +26,10 @@ services:
       - "--loop"
       - "uvloop"
     environment:
+      - APP_NAME=flight_searcher
       - ENVIRONMENT=local
-      - DEBUG=1
       - REDIS_URL=redis://redis/0
+      - DEBUG=1
       - WEB_CONCURRENCY=5   # 2*CPU + 1
     stdin_open: true # docker run -i
     tty: true        # docker run -t
