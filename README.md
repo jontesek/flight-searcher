@@ -64,4 +64,4 @@ For settings I used [Pydantic](https://pydantic-docs.helpmanual.io/usage/setting
 * Tests (unit and for API)
 * Use async HTTP client.
 * Beware of Redis overflow by chance or by hacker - put some limit how many results can be store in Redis.
-* Deployment to production - choose `uvicorn` with one process, `uvicorn` with multiple processes, `gunicorn`. It would depend on autoscaling setup in Kubernetes.
+* Deployment to production - choose `uvicorn` with one process, `uvicorn` with multiple processes, `gunicorn` with uvicorn workers. It would depend on autoscaling setup in Kubernetes.

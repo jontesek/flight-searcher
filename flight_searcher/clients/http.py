@@ -2,7 +2,6 @@ from request_session import RequestSession
 
 
 class HttpClient(RequestSession):
-
     def __init__(self, **kwargs):
         print("http client init called")
         if not kwargs.get("user_agent"):

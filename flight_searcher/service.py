@@ -26,7 +26,13 @@ class Service:
         departure_date: datetime.date,
         top_count: int,
     ) -> list[FlightResponse]:
-        self.log.info("get_top_flights.start", src_country=src_country, dst_country=dst_country, departure_date=departure_date, top_count=top_count)
+        self.log.info(
+            "get_top_flights.start",
+            src_country=src_country,
+            dst_country=dst_country,
+            departure_date=departure_date,
+            top_count=top_count,
+        )
         src_airports = await self._airports_provider.get_top_airports_by_country(
             src_country, top_count
         )

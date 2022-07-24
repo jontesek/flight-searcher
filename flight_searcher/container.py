@@ -3,10 +3,10 @@
 import structlog
 from dependency_injector import containers, providers
 
-from .clients import redis, http
-from .service import Service
-from .providers.flights import FlightsProvider
+from .clients import http, redis
 from .providers.airports import AirportsProvider
+from .providers.flights import FlightsProvider
+from .service import Service
 
 
 class Container(containers.DeclarativeContainer):

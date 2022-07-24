@@ -1,11 +1,10 @@
 from collections import defaultdict
-from aioredis import Redis
-import pycountry
 
+import pycountry
 import structlog
+from aioredis import Redis
 
 from ..clients.http import HttpClient
-
 
 LOCATIONS_URL = "https://api.skypicker.com/locations/dump?active_only=false&location_types=airport&limit=10000"
 REDIS_AIRPORTS_KEY = "country_airports:{country}"
@@ -13,8 +12,12 @@ CACHE_HOURS = 24
 
 
 class AirportsProvider:
-
-    def __init__(self, redis: Redis, http_client: HttpClient, logger: structlog.stdlib.BoundLogger) -> None:
+    def __init__(
+        self,
+        redis: Redis,
+        http_client: HttpClient,
+        logger: structlog.stdlib.BoundLogger,
+    ) -> None:
         self._redis = redis
         self._http_client = http_client
         self.log = logger.bind(name="airports")
@@ -23,7 +26,10 @@ class AirportsProvider:
         countries = defaultdict(list)
         for location in locations:
             country = location["city"]["country"]["code"]
-            airport = {"code": location["code"], "popularity": location["dst_popularity_score"]}
+            airport = {
+                "code": location["code"],
+                "popularity": location["dst_popularity_score"],
+            }
             countries[country].append(airport)
         return countries
 
@@ -44,7 +50,9 @@ class AirportsProvider:
             await self._redis.expire(_key, CACHE_HOURS * 3600)
         return country_dict
 
-    async def get_top_airports_by_country(self, country: str, top_count: int = -1) -> list[str]:
+    async def get_top_airports_by_country(
+        self, country: str, top_count: int = -1
+    ) -> list[str]:
         if not pycountry.countries.get(alpha_2=country):
             raise InvalidCountry(country)
         _key = REDIS_AIRPORTS_KEY.format(country=country)
@@ -64,6 +72,7 @@ class AirportsProvider:
 
 class AirportsForCountryNotFound(Exception):
     pass
+
 
 class InvalidCountry(Exception):
     pass

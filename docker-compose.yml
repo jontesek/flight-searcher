@@ -14,7 +14,8 @@ services:
       - .env
     command:
       - "uvicorn"
-      - "flight_searcher.api.app:app"
+      - --factory
+      - "flight_searcher.api.app:create_app"
       - "--host"
       - "0.0.0.0"
       - "--port"
@@ -30,7 +31,7 @@ services:
       - ENVIRONMENT=local
       - REDIS_URL=redis://redis/0
       - DEBUG=1
-      - WEB_CONCURRENCY=5   # 2*CPU + 1
+      # - WEB_CONCURRENCY=2
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     depends_on:

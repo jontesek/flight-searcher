@@ -1,14 +1,14 @@
-from fastapi import FastAPI
-from dependency_injector.wiring import Provide, inject
-from dependency_injector.providers import Configuration
+import logging
+
 import sentry_sdk
+from fastapi import FastAPI
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 from sentry_sdk.integrations.logging import LoggingIntegration
 
 from ..container import Container
+from ..settings import SETTINGS
 from .routers.health import router as health_router
 from .routers.top_flights import router as top_flights_router
-from ..settings import SETTINGS
 
 
 def create_app():
@@ -25,10 +25,14 @@ def create_app():
     )
 
     if not SETTINGS.is_local:
+        # Send only critical log events to Sentry.
+        sentry_logging = LoggingIntegration(
+            level=logging.INFO, event_level=logging.CRITICAL
+        )
         sentry_sdk.init(
             dsn=SETTINGS.sentry_dsn,
             environment=SETTINGS.environment,
-            integrations=[LoggingIntegration(level=None, event_level=None)],
+            integrations=[sentry_logging],
         )
         app.add_middleware(SentryAsgiMiddleware)
 
@@ -36,6 +40,3 @@ def create_app():
     app.include_router(top_flights_router)
 
     return app
-
-
-app = create_app()

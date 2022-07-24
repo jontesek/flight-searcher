@@ -1,15 +1,13 @@
 import datetime
 
-from fastapi import APIRouter, Depends, Query, HTTPException
-from dependency_injector.wiring import inject, Provide
+from dependency_injector.wiring import Provide, inject
+from fastapi import APIRouter, Depends, HTTPException, Query
 
-from ..schemas.flight import FlightResponse
-from ...service import Service
 from ...container import Container
-from ...providers.flights import DateTooOld
 from ...providers.airports import AirportsForCountryNotFound, InvalidCountry
-from ...settings import SETTINGS
-
+from ...providers.flights import DateTooOld
+from ...service import Service
+from ..schemas.flight import FlightResponse
 
 router = APIRouter()
 
@@ -37,7 +35,4 @@ async def top_flights(
         )
     except (DateTooOld, AirportsForCountryNotFound, InvalidCountry) as e:
         _msg = f"{type(e).__name__}: {str(e)}"
-        raise HTTPException(status_code=422, detail=_msg)
-    except Exception as e:
-        service.log.exception("api.get_top_flights.exception")
-        raise HTTPException(status_code=500, detail="Unexpected problem on server.")
+        raise HTTPException(status_code=422, detail=_msg) from e

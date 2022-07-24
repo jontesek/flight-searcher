@@ -1,4 +1,4 @@
-from pydantic import BaseSettings, Field, RedisDsn, BaseModel
+from pydantic import BaseSettings, Field, RedisDsn
 
 
 # special methods for creating settings
@@ -40,5 +40,6 @@ class AllSettings(MainSettings):
         main_stgs.environment,
     )
     is_local: bool = main_stgs.environment == Environment.local
+
 
 SETTINGS = AllSettings()
