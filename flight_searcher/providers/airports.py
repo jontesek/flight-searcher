@@ -20,7 +20,7 @@ class AirportsProvider:
     ) -> None:
         self._redis = redis
         self._http_client = http_client
-        self.log = logger.bind(name="airports")
+        self.log = logger.bind(logger_name="airports")
 
     def _create_country_dict(self, locations: list[dict]) -> dict[str, list[dict]]:
         countries = defaultdict(list)

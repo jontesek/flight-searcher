@@ -40,7 +40,7 @@ Services:
 /api
     /routers - defined endpoints
     app.py - this creates APP
-/clients - little redundant, but 
+/clients - redis and http
 /providers - handle airports and flights: either get from kiwi or from redis
 container.py - dependencies
 service.py - main program (core) - uses providers, is called from API router

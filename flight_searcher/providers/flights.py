@@ -23,7 +23,7 @@ class FlightsProvider:
     ) -> None:
         self._redis = redis
         self._http_client = http_client
-        self.log = logger.bind(name="flights")
+        self.log = logger.bind(logger_name="flights")
 
     @staticmethod
     def _build_airport_params(airports: list[str]) -> str:

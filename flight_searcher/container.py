@@ -1,8 +1,8 @@
 """Containers module."""
 
-import structlog
 from dependency_injector import containers, providers
 
+from . import logs
 from .clients import http, redis
 from .providers.airports import AirportsProvider
 from .providers.flights import FlightsProvider
@@ -17,7 +17,9 @@ class Container(containers.DeclarativeContainer):
 
     # general
     logger = providers.Resource(
-        structlog.get_logger,
+        logs.get_logger,
+        config.is_debug,
+        "container",
     )
 
     redis_pool = providers.Resource(

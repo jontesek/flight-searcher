@@ -17,7 +17,7 @@ class Service:
     ) -> None:
         self._airports_provider = airports_provider
         self._flights_provider = flights_provider
-        self.log = logger.bind(name="service")
+        self.log = logger.bind(logger_name="service")
 
     async def get_top_flights(
         self,
